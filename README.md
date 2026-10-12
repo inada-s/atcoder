@@ -10,9 +10,12 @@ atcoder/
 ├── lib/
 │   └── ac-library/           # AtCoder Library (git submodule)。#include <atcoder/all>
 ├── .vscode/
-│   ├── settings.json         # CPH の設定。コンパイラは g++-15、ジャッジと同じオプション
+│   ├── settings.json         # CPH / clangd / デバッグの設定 (パスに依存しないもの)
 │   ├── cp.code-snippets      # C++ スニペット (vin, yn, vout, dxdy, chmax, mint)
 │   └── extensions.json       # 推奨拡張 (CPH, Vim, clangd)
+├── tools/
+│   ├── setup.sh              # パスに依存する CPH の設定をマシン設定に書く (clone 後に 1 回)
+│   └── cph_input.py          # デバッグ用に CPH のテストケースを in.txt に書き出す
 ├── compile_flags.txt         # clangd 用 (補完・診断)。clangd 本体は ~/.local/opt/clangd_* (公式バイナリ、sudo 不要)
 ├── abc326a.cpp ...           # 解答。CPH がルートに作る (gitignore)
 └── .cph/                     # サンプルとバイナリ (gitignore)
@@ -22,13 +25,14 @@ atcoder/
 
 ```sh
 git clone --recursive <this repo> ~/atcoder
-sudo apt install g++-15             # ubuntu-toolchain-r/test PPA
+sudo apt install g++-15 gdb         # g++-15 は ubuntu-toolchain-r/test PPA
 code ~/atcoder                      # WSL 拡張で開く。推奨拡張を入れる
+./tools/setup.sh                    # リポジトリの場所に依存する CPH の設定をマシン設定に書く
 ```
 
 Chrome に [Competitive Companion](https://github.com/jmerle/competitive-companion) を入れる。ポートは既定のまま (CPH の 27121 が含まれている)。
 
-リポジトリを `~/atcoder` 以外に置いたら `.vscode/settings.json` の `/home/mecha/atcoder` を直す (CPH はカレントディレクトリ未指定でコンパイラを起動するので相対パスが使えない)。
+CPH はテンプレートの場所や `-I` を絶対パスでしか受け付けない (変数展開なし、相対パスの基準も拡張ホストの作業ディレクトリ) ので、その 3 つだけ `tools/setup.sh` が clone 先を埋めて `~/.vscode-server/data/Machine/settings.json` に書く。リポジトリを動かしたら実行し直す。
 
 ## 使い方
 

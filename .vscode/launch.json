@@ -1,0 +1,49 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // CPH のテストケースを選んでデバッグ実行。F5 でケース番号を聞かれる
+            "name": "Debug (CPH testcase)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
+            "args": ["<", "${workspaceFolder}/in.txt"],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "debug: cph testcase",
+            "MIMode": "gdb",
+            "externalConsole": false,
+            "setupCommands": [
+                { "text": "-enable-pretty-printing", "ignoreFailures": true }
+            ]
+        },
+        {
+            // in.txt に手で書いた入力でデバッグ実行
+            "name": "Debug (stdin = in.txt)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
+            "args": ["<", "${workspaceFolder}/in.txt"],
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build debug",
+            "MIMode": "gdb",
+            "externalConsole": false,
+            "setupCommands": [
+                { "text": "-enable-pretty-printing", "ignoreFailures": true }
+            ]
+        },
+        {
+            // 入力をターミナルから手で打つ版
+            "name": "Debug (stdin = terminal)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "build debug",
+            "MIMode": "gdb",
+            "externalConsole": false,
+            "setupCommands": [
+                { "text": "-enable-pretty-printing", "ignoreFailures": true }
+            ]
+        }
+    ]
+}

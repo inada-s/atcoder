@@ -1,0 +1,287 @@
+{
+    // C++ のスニペット。プレフィックスを打って Tab で展開する。$1, ${1:n} はタブストップ (Tab で順に移動)
+    // ---- 入出力 ----
+    "read int": {
+        "scope": "cpp",
+        "prefix": "nin",
+        "body": ["${1:ll} ${2:n};", "cin >> ${2:n};"],
+        "description": "整数を 1 つ読む"
+    },
+    "read vector": {
+        "scope": "cpp",
+        "prefix": "vin",
+        "body": ["vector<${1:ll}> ${2:a}(${3:n});", "rep(i, ${3:n}) cin >> ${2:a}[i];"],
+        "description": "vector を読む"
+    },
+    "yes/no": {
+        "scope": "cpp",
+        "prefix": "yn",
+        "body": ["cout << (${1:cond} ? \"Yes\" : \"No\") << '\\n';"],
+        "description": "Yes / No を出力"
+    },
+    "print vector": {
+        "scope": "cpp",
+        "prefix": "vout",
+        "body": ["rep(i, ${1:a}.size()) cout << ${1:a}[i] << (i + 1 < (int)${1:a}.size() ? ' ' : '\\n');"],
+        "description": "vector を空白区切りで出力"
+    },
+    // ---- 小物 ----
+    "dx dy": {
+        "scope": "cpp",
+        "prefix": "dxdy",
+        "body": ["const int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};"],
+        "description": "4 方向"
+    },
+    "chmax chmin": {
+        "scope": "cpp",
+        "prefix": "chmax",
+        "body": [
+            "template <class T> bool chmax(T& a, const T& b) { return a < b ? (a = b, true) : false; }",
+            "template <class T> bool chmin(T& a, const T& b) { return b < a ? (a = b, true) : false; }"
+        ],
+        "description": "chmax / chmin"
+    },
+    "modint": {
+        "scope": "cpp",
+        "prefix": "mint",
+        "body": ["using mint = atcoder::modint${1|998244353,1000000007|};"],
+        "description": "ACL の modint (template の #include <atcoder/all> を有効にする)"
+    },
+    // ---- グラフ ----
+    "read graph": {
+        "scope": "cpp",
+        "prefix": "graph",
+        "body": [
+            "vector<vector<int>> ${1:g}(${2:n});",
+            "rep(i, ${3:m}) {",
+            "    int a, b;",
+            "    cin >> a >> b;",
+            "    --a, --b;",
+            "    ${1:g}[a].push_back(b);",
+            "    ${1:g}[b].push_back(a);",
+            "}"
+        ],
+        "description": "無向グラフの隣接リストを読む (1-indexed 入力)"
+    },
+    "read weighted graph": {
+        "scope": "cpp",
+        "prefix": "wgraph",
+        "body": [
+            "vector<vector<pair<int, ll>>> ${1:g}(${2:n});  // {to, cost}",
+            "rep(i, ${3:m}) {",
+            "    int a, b;",
+            "    ll c;",
+            "    cin >> a >> b >> c;",
+            "    --a, --b;",
+            "    ${1:g}[a].emplace_back(b, c);",
+            "    ${1:g}[b].emplace_back(a, c);",
+            "}"
+        ],
+        "description": "重み付き無向グラフの隣接リストを読む"
+    },
+    "bfs": {
+        "scope": "cpp",
+        "prefix": "bfs",
+        "body": [
+            "vector<int> ${1:dist}(${2:n}, -1);",
+            "queue<int> q;",
+            "${1:dist}[${3:s}] = 0;",
+            "q.push(${3:s});",
+            "while (!q.empty()) {",
+            "    int v = q.front();",
+            "    q.pop();",
+            "    for (int u : ${4:g}[v]) {",
+            "        if (${1:dist}[u] != -1) continue;",
+            "        ${1:dist}[u] = ${1:dist}[v] + 1;",
+            "        q.push(u);",
+            "    }",
+            "}"
+        ],
+        "description": "BFS (隣接リスト)。dist[v] = s からの距離、未到達は -1"
+    },
+    "bfs grid": {
+        "scope": "cpp",
+        "prefix": "bfsgrid",
+        "body": [
+            "const int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};",
+            "vector ${1:dist}(${2:H}, vector<int>(${3:W}, -1));",
+            "queue<pair<int, int>> q;",
+            "${1:dist}[${4:sy}][${5:sx}] = 0;",
+            "q.emplace(${4:sy}, ${5:sx});",
+            "while (!q.empty()) {",
+            "    auto [y, x] = q.front();",
+            "    q.pop();",
+            "    rep(d, 4) {",
+            "        int ny = y + dy[d], nx = x + dx[d];",
+            "        if (ny < 0 || ny >= ${2:H} || nx < 0 || nx >= ${3:W}) continue;",
+            "        if (${6:S}[ny][nx] == '#' || ${1:dist}[ny][nx] != -1) continue;",
+            "        ${1:dist}[ny][nx] = ${1:dist}[y][x] + 1;",
+            "        q.emplace(ny, nx);",
+            "    }",
+            "}"
+        ],
+        "description": "グリッド BFS。S[y][x] が '#' なら壁、未到達は -1"
+    },
+    "dfs": {
+        "scope": "cpp",
+        "prefix": "dfs",
+        "body": [
+            "vector<bool> ${1:seen}(${2:n}, false);",
+            "auto dfs = [&](this auto&& dfs, int v) -> void {",
+            "    ${1:seen}[v] = true;",
+            "    for (int u : ${3:g}[v]) {",
+            "        if (${1:seen}[u]) continue;",
+            "        dfs(u);",
+            "    }",
+            "};",
+            "dfs(${4:0});"
+        ],
+        "description": "DFS (再帰ラムダ、C++23 の deducing this)。seen[v] = 到達済み"
+    },
+    "dijkstra": {
+        "scope": "cpp",
+        "prefix": "dijkstra",
+        "body": [
+            "const ll INF = 1LL << 60;",
+            "vector<ll> ${1:dist}(${2:n}, INF);",
+            "priority_queue<pair<ll, int>, vector<pair<ll, int>>, greater<>> pq;  // {dist, v}",
+            "${1:dist}[${3:s}] = 0;",
+            "pq.emplace(0, ${3:s});",
+            "while (!pq.empty()) {",
+            "    auto [d, v] = pq.top();",
+            "    pq.pop();",
+            "    if (d > ${1:dist}[v]) continue;",
+            "    for (auto [u, c] : ${4:g}[v]) {",
+            "        if (${1:dist}[v] + c < ${1:dist}[u]) {",
+            "            ${1:dist}[u] = ${1:dist}[v] + c;",
+            "            pq.emplace(${1:dist}[u], u);",
+            "        }",
+            "    }",
+            "}"
+        ],
+        "description": "ダイクストラ。g[v] = {to, cost} (wgraph で作る)、未到達は INF"
+    },
+    "union find": {
+        "scope": "cpp",
+        "prefix": "uf",
+        "body": [
+            "struct UnionFind {",
+            "    vector<int> p;  // 根なら -(サイズ)、それ以外は親",
+            "    UnionFind(int n) : p(n, -1) {}",
+            "    int find(int x) { return p[x] < 0 ? x : p[x] = find(p[x]); }",
+            "    bool same(int x, int y) { return find(x) == find(y); }",
+            "    int size(int x) { return -p[find(x)]; }",
+            "    bool unite(int x, int y) {",
+            "        x = find(x), y = find(y);",
+            "        if (x == y) return false;",
+            "        if (p[x] > p[y]) swap(x, y);  // 大きい方に小さい方をつなぐ",
+            "        p[x] += p[y];",
+            "        p[y] = x;",
+            "        return true;",
+            "    }",
+            "};"
+        ],
+        "description": "Union-Find (経路圧縮 + サイズ併合)。UnionFind uf(n); uf.unite(a, b); uf.same(a, b); uf.size(a)"
+    },
+    // ---- 数論 ----
+    "modpow": {
+        "scope": "cpp",
+        "prefix": "modpow",
+        "body": [
+            "ll modpow(ll a, ll e, ll m = ${1:MOD}) {",
+            "    ll r = 1;",
+            "    a %= m;",
+            "    for (; e > 0; e >>= 1, a = a * a % m)",
+            "        if (e & 1) r = r * a % m;",
+            "    return r;",
+            "}"
+        ],
+        "description": "a^e mod m (繰り返し二乗法)。逆元は modpow(a, MOD - 2)"
+    },
+    "combination mod": {
+        "scope": "cpp",
+        "prefix": "comb",
+        "body": [
+            "const ll MOD = ${1|998244353,1000000007|};",
+            "struct Comb {",
+            "    vector<ll> fact, inv;  // 階乗と階乗の逆元",
+            "    Comb(int n) : fact(n + 1), inv(n + 1) {",
+            "        fact[0] = 1;",
+            "        for (int i = 1; i <= n; i++) fact[i] = fact[i - 1] * i % MOD;",
+            "        ll a = fact[n], r = 1;  // inv[n] = fact[n]^(MOD-2)",
+            "        for (ll e = MOD - 2; e > 0; e >>= 1, a = a * a % MOD)",
+            "            if (e & 1) r = r * a % MOD;",
+            "        inv[n] = r;",
+            "        for (int i = n; i > 0; i--) inv[i - 1] = inv[i] * i % MOD;",
+            "    }",
+            "    ll C(int n, int r) { return (r < 0 || r > n) ? 0 : fact[n] * inv[r] % MOD * inv[n - r] % MOD; }",
+            "    ll P(int n, int r) { return (r < 0 || r > n) ? 0 : fact[n] * inv[n - r] % MOD; }",
+            "    ll H(int n, int r) { return n == 0 ? (r == 0 ? 1 : 0) : C(n + r - 1, r); }  // 重複組合せ",
+            "};",
+            "Comb comb(${2:200000});"
+        ],
+        "description": "nCr / nPr / nHr (mod 素数、階乗テーブル)。comb.C(n, r), comb.P(n, r), comb.H(n, r)。n は上限まで前計算"
+    },
+    // ---- DP ----
+    "memo recursion 1": {
+        "scope": "cpp",
+        "prefix": "memo1",
+        "body": [
+            "vector<optional<${1:ll}>> memo(${2:n} + 1);",
+            "auto f = [&](this auto&& f, int ${3:i}) -> ${1:ll} {",
+            "    if (${4:i <= 1}) return ${5:1};  // 基底",
+            "    if (memo[${3:i}]) return *memo[${3:i}];",
+            "    ${1:ll} res = ${6:f(i - 1) + f(i - 2)};",
+            "    memo[${3:i}] = res;",
+            "    return res;",
+            "};"
+        ],
+        "description": "メモ化再帰 (1 引数)。optional で未計算を表すので番兵は不要"
+    },
+    "memo recursion 2": {
+        "scope": "cpp",
+        "prefix": "memo2",
+        "body": [
+            "vector memo(${1:n} + 1, vector<optional<${2:ll}>>(${3:m} + 1));",
+            "auto f = [&](this auto&& f, int ${4:i}, int ${5:j}) -> ${2:ll} {",
+            "    if (${6:i == 0 || j == 0}) return ${7:1};  // 基底",
+            "    if (memo[${4:i}][${5:j}]) return *memo[${4:i}][${5:j}];",
+            "    ${2:ll} res = ${8:f(i - 1, j) + f(i, j - 1)};",
+            "    memo[${4:i}][${5:j}] = res;",
+            "    return res;",
+            "};"
+        ],
+        "description": "メモ化再帰 (2 引数)。optional で未計算を表すので番兵は不要"
+    },
+    "memo recursion 3": {
+        "scope": "cpp",
+        "prefix": "memo3",
+        "body": [
+            "vector memo(${1:n} + 1, vector(${2:m} + 1, vector<optional<${3:ll}>>(${4:k} + 1)));",
+            "auto f = [&](this auto&& f, int ${5:i}, int ${6:j}, int ${7:l}) -> ${3:ll} {",
+            "    if (${8:i == 0 || j == 0 || l == 0}) return ${9:1};  // 基底",
+            "    if (memo[${5:i}][${6:j}][${7:l}]) return *memo[${5:i}][${6:j}][${7:l}];",
+            "    ${3:ll} res = ${10:f(i - 1, j, l) + f(i, j - 1, l) + f(i, j, l - 1)};",
+            "    memo[${5:i}][${6:j}][${7:l}] = res;",
+            "    return res;",
+            "};"
+        ],
+        "description": "メモ化再帰 (3 引数)。optional で未計算を表すので番兵は不要"
+    },
+    "memo recursion map": {
+        "scope": "cpp",
+        "prefix": "memomap",
+        "body": [
+            "map<tuple<${1:int, int}>, ${2:ll}> memo;",
+            "auto f = [&](this auto&& f, ${3:int i, int j}) -> ${2:ll} {",
+            "    if (${4:i == 0 || j == 0}) return ${5:1};  // 基底",
+            "    auto key = tuple{${6:i, j}};",
+            "    if (auto it = memo.find(key); it != memo.end()) return it->second;",
+            "    ${2:ll} res = ${7:f(i - 1, j) + f(i, j - 1)};",
+            "    memo[key] = res;",
+            "    return res;",
+            "};"
+        ],
+        "description": "メモ化再帰 (map にメモ、キーは tuple なので引数の数は自由)。引数が大きい/疎なときに。密なら memo1〜3"
+    }
+}

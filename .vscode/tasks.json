@@ -1,0 +1,42 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            // デバッグ用ビルド。最適化なし + デバッグ情報 + STL の範囲チェック (_GLIBCXX_DEBUG)
+            "label": "build debug",
+            "type": "shell",
+            "command": "g++-15",
+            "args": [
+                "-std=gnu++23", "-g", "-O0", "-DLOCAL", "-D_GLIBCXX_DEBUG",
+                "-I${workspaceFolder}/lib/ac-library", "-I${workspaceFolder}/lib",
+                "${file}", "-o", "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug"
+            ],
+            "problemMatcher": ["$gcc"],
+            "presentation": { "reveal": "silent", "clear": true }
+        },
+        {
+            // CPH のテストケース (番号を聞く) の入力を in.txt に書き出す
+            "label": "cph testcase -> in.txt",
+            "type": "shell",
+            "command": "python3",
+            "args": ["${workspaceFolder}/tools/cph_input.py", "${file}", "${input:testcase}"],
+            "problemMatcher": [],
+            "presentation": { "reveal": "always", "clear": true, "focus": false }
+        },
+        {
+            // 上の 2 つを順に実行する (launch.json の「Debug (CPH testcase)」が使う)
+            "label": "debug: cph testcase",
+            "dependsOn": ["cph testcase -> in.txt", "build debug"],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "testcase",
+            "type": "promptString",
+            "description": "CPH のテストケース番号 (1 始まり)",
+            "default": "1"
+        }
+    ]
+}

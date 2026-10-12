@@ -1,0 +1,37 @@
+{
+    // ---- CPH (Competitive Programming Helper) ----
+    // CPH はカレントディレクトリ未指定でコンパイラを起動するので、パスは絶対パスで書く。
+    // リポジトリを別の場所に置いたら、/home/mecha/atcoder の 3 箇所を直す。
+    "cph.general.defaultLanguage": "cpp",
+    "cph.general.defaultLanguageTemplateFileLocation": "/home/mecha/atcoder/template.cpp",
+    "cph.general.doTemplateFileVariableReplacement": true,
+    "cph.general.saveLocation": "/home/mecha/atcoder/.cph",
+    "cph.general.useShortAtCoderName": true,
+    "cph.general.timeOut": 4000,
+    "cph.general.menuChoices": "cpp python",
+    "cph.language.cpp.Command": "g++-15",
+    // AtCoder のジャッジ (C++23 GCC) に合わせたオプション。-DLOCAL で template の dump() が有効になる
+    "cph.language.cpp.Args": "-std=gnu++23 -O2 -Wall -Wextra -Wno-unused-parameter -DLOCAL -I/home/mecha/atcoder/lib/ac-library -I/home/mecha/atcoder/lib -march=native -pthread -ftrivial-auto-var-init=zero",
+    "cph.language.python.Command": "python3",
+
+    // ---- エディタ ----
+    "files.exclude": {
+        ".cph": true,
+        "**/*.bin": true
+    },
+    "[cpp]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true
+    },
+    // ---- デバッグ ----
+    // 止まったときに各行の右側へ変数の値を表示する (ホバー不要)
+    "debug.inlineValues": "on",
+    "debug.showBreakpointsInOverviewRuler": true,
+
+    // ---- 補完 (clangd) ----
+    // Microsoft C/C++ 拡張の IntelliSense は止めて clangd に任せる (両方動くと二重に出る)
+    "C_Cpp.intelliSenseEngine": "disabled",
+    // clangd 本体は公式バイナリを ~/.local/opt に置いている (sudo 不要)。フラグは compile_flags.txt
+    "clangd.path": "/home/mecha/.local/bin/clangd",
+    "clangd.arguments": ["--header-insertion=never", "--background-index"]
+}

@@ -1,0 +1,7 @@
+-std=gnu++23
+-DLOCAL
+-Ilib/ac-library
+-Ilib
+-Wall
+-Wextra
+-Wno-unused-parameter

@@ -1,0 +1,12 @@
+# 解答はコミットしない (Competitive Companion / CPH がルートに作る)
+/*.cpp
+/*.py
+!/template.cpp
+
+# CPH のサンプル (.prob) とビルド成果物
+.cph/
+*.bin
+a.out
+
+# デバッグ実行の入力 (launch.json が stdin に流す)
+/in.txt

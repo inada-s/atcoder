@@ -11,7 +11,7 @@ atcoder/
 │   └── ac-library/           # AtCoder Library (git submodule)。#include <atcoder/all>
 ├── .vscode/
 │   ├── settings.json         # CPH / clangd / デバッグの設定 (パスに依存しないもの)
-│   ├── cp.code-snippets      # C++ スニペット (vin, yn, vout, dxdy, chmax, mint)
+│   ├── cp.code-snippets      # C++ スニペット。全部 _ 始まり (_bfs, _dijkstra, _uf, _memo1 など)。_ を打つと一覧が出る
 │   └── extensions.json       # 推奨拡張 (CPH, Vim, clangd)
 ├── tools/
 │   ├── setup.sh              # パスに依存する CPH の設定をマシン設定に書く (clone 後に 1 回)

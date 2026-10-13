@@ -1,40 +1,40 @@
 {
-    // C++ のスニペット。プレフィックスを打って Tab で展開する。$1, ${1:n} はタブストップ (Tab で順に移動)
+    // C++ のスニペット。プレフィックスは全部 _ 始まり (変数名の補完と混ざらないように)。_ を打つと一覧が出る。$1, ${1:n} はタブストップ (Tab で順に移動)
     // ---- 入出力 ----
     "read int": {
         "scope": "cpp",
-        "prefix": "nin",
+        "prefix": "_nin",
         "body": ["${1:ll} ${2:n};", "cin >> ${2:n};"],
         "description": "整数を 1 つ読む"
     },
     "read vector": {
         "scope": "cpp",
-        "prefix": "vin",
+        "prefix": "_vin",
         "body": ["vector<${1:ll}> ${2:a}(${3:n});", "rep(i, ${3:n}) cin >> ${2:a}[i];"],
         "description": "vector を読む"
     },
     "yes/no": {
         "scope": "cpp",
-        "prefix": "yn",
+        "prefix": "_yn",
         "body": ["cout << (${1:cond} ? \"Yes\" : \"No\") << '\\n';"],
         "description": "Yes / No を出力"
     },
     "print vector": {
         "scope": "cpp",
-        "prefix": "vout",
+        "prefix": "_vout",
         "body": ["rep(i, ${1:a}.size()) cout << ${1:a}[i] << (i + 1 < (int)${1:a}.size() ? ' ' : '\\n');"],
         "description": "vector を空白区切りで出力"
     },
     // ---- 小物 ----
     "dx dy": {
         "scope": "cpp",
-        "prefix": "dxdy",
+        "prefix": "_dxdy",
         "body": ["const int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};"],
         "description": "4 方向"
     },
     "chmax chmin": {
         "scope": "cpp",
-        "prefix": "chmax",
+        "prefix": "_chmax",
         "body": [
             "template <class T> bool chmax(T& a, const T& b) { return a < b ? (a = b, true) : false; }",
             "template <class T> bool chmin(T& a, const T& b) { return b < a ? (a = b, true) : false; }"
@@ -43,14 +43,14 @@
     },
     "modint": {
         "scope": "cpp",
-        "prefix": "mint",
+        "prefix": "_mint",
         "body": ["using mint = atcoder::modint${1|998244353,1000000007|};"],
         "description": "ACL の modint (template の #include <atcoder/all> を有効にする)"
     },
     // ---- グラフ ----
     "read graph": {
         "scope": "cpp",
-        "prefix": "graph",
+        "prefix": "_graph",
         "body": [
             "vector<vector<int>> ${1:g}(${2:n});",
             "rep(i, ${3:m}) {",
@@ -65,7 +65,7 @@
     },
     "read weighted graph": {
         "scope": "cpp",
-        "prefix": "wgraph",
+        "prefix": "_wgraph",
         "body": [
             "vector<vector<pair<int, ll>>> ${1:g}(${2:n});  // {to, cost}",
             "rep(i, ${3:m}) {",
@@ -81,7 +81,7 @@
     },
     "bfs": {
         "scope": "cpp",
-        "prefix": "bfs",
+        "prefix": "_bfs",
         "body": [
             "vector<int> ${1:dist}(${2:n}, -1);",
             "queue<int> q;",
@@ -101,7 +101,7 @@
     },
     "bfs grid": {
         "scope": "cpp",
-        "prefix": "bfsgrid",
+        "prefix": "_bfsgrid",
         "body": [
             "const int dx[4] = {1, 0, -1, 0}, dy[4] = {0, 1, 0, -1};",
             "vector ${1:dist}(${2:H}, vector<int>(${3:W}, -1));",
@@ -124,7 +124,7 @@
     },
     "dfs": {
         "scope": "cpp",
-        "prefix": "dfs",
+        "prefix": "_dfs",
         "body": [
             "vector<bool> ${1:seen}(${2:n}, false);",
             "auto dfs = [&](this auto&& dfs, int v) -> void {",
@@ -140,7 +140,7 @@
     },
     "dijkstra": {
         "scope": "cpp",
-        "prefix": "dijkstra",
+        "prefix": "_dijkstra",
         "body": [
             "const ll INF = 1LL << 60;",
             "vector<ll> ${1:dist}(${2:n}, INF);",
@@ -161,9 +161,97 @@
         ],
         "description": "ダイクストラ。g[v] = {to, cost} (wgraph で作る)、未到達は INF"
     },
+    "read directed graph": {
+        "scope": "cpp",
+        "prefix": "_digraph",
+        "body": [
+            "vector<vector<int>> ${1:g}(${2:n});",
+            "rep(i, ${3:m}) {",
+            "    int a, b;",
+            "    cin >> a >> b;",
+            "    --a, --b;",
+            "    ${1:g}[a].push_back(b);  // a -> b",
+            "}"
+        ],
+        "description": "有向グラフの隣接リストを読む (1-indexed 入力)"
+    },
+    "topological sort": {
+        "scope": "cpp",
+        "prefix": "_toposort",
+        "body": [
+            "// トポロジカルソート (Kahn)。order.size() < n なら閉路あり",
+            "vector<int> indeg(${1:n}, 0);",
+            "for (auto& es : ${2:g}) for (int u : es) indeg[u]++;",
+            "queue<int> q;  // 辞書順最小にするなら priority_queue<int, vector<int>, greater<>> にして q.top()",
+            "rep(i, ${1:n}) if (indeg[i] == 0) q.push(i);",
+            "vector<int> order;",
+            "while (!q.empty()) {",
+            "    int v = q.front();",
+            "    q.pop();",
+            "    order.push_back(v);",
+            "    for (int u : ${2:g}[v]) {",
+            "        if (--indeg[u] == 0) q.push(u);",
+            "    }",
+            "}"
+        ],
+        "description": "トポロジカルソート (Kahn 法)。g は有向の隣接リスト (_digraph)。order.size() < n なら閉路あり"
+    },
+    "cycle detection directed": {
+        "scope": "cpp",
+        "prefix": "_cycledir",
+        "body": [
+            "// 有向グラフの閉路検出 (DFS, state 0=未訪問 1=探索中 2=完了)。cycle に閉路の頂点列 (無ければ空)",
+            "vector<int> state(${1:n}, 0), path, cycle;",
+            "auto dfs = [&](this auto&& dfs, int v) -> bool {",
+            "    state[v] = 1;",
+            "    path.push_back(v);",
+            "    for (int u : ${2:g}[v]) {",
+            "        if (state[u] == 2) continue;",
+            "        if (state[u] == 1) {  // 探索中の頂点に戻った = 閉路",
+            "            cycle.assign(find(path.begin(), path.end(), u), path.end());",
+            "            return true;",
+            "        }",
+            "        if (dfs(u)) return true;",
+            "    }",
+            "    path.pop_back();",
+            "    state[v] = 2;",
+            "    return false;",
+            "};",
+            "rep(i, ${1:n}) if (state[i] == 0 && dfs(i)) break;",
+            "bool has_cycle = !cycle.empty();"
+        ],
+        "description": "有向グラフの閉路検出 (DFS)。閉路を 1 つ cycle に復元。g は _digraph の隣接リスト"
+    },
+    "cycle detection undirected": {
+        "scope": "cpp",
+        "prefix": "_cycleundir",
+        "body": [
+            "// 無向グラフの閉路検出 (DFS, 親へ戻る辺は無視)。cycle に閉路の頂点列 (無ければ空)",
+            "// 多重辺 (同じ 2 頂点間に 2 本) も閉路として扱うなら、親の頂点ではなく来た辺の番号で判定する",
+            "vector<int> state(${1:n}, 0), path, cycle;",
+            "auto dfs = [&](this auto&& dfs, int v, int par) -> bool {",
+            "    state[v] = 1;",
+            "    path.push_back(v);",
+            "    for (int u : ${2:g}[v]) {",
+            "        if (u == par || state[u] == 2) continue;",
+            "        if (state[u] == 1) {",
+            "            cycle.assign(find(path.begin(), path.end(), u), path.end());",
+            "            return true;",
+            "        }",
+            "        if (dfs(u, v)) return true;",
+            "    }",
+            "    path.pop_back();",
+            "    state[v] = 2;",
+            "    return false;",
+            "};",
+            "rep(i, ${1:n}) if (state[i] == 0 && dfs(i, -1)) break;",
+            "bool has_cycle = !cycle.empty();"
+        ],
+        "description": "無向グラフの閉路検出 (DFS)。閉路を 1 つ cycle に復元。g は _graph の隣接リスト。有無だけなら UnionFind でも可"
+    },
     "union find": {
         "scope": "cpp",
-        "prefix": "uf",
+        "prefix": "_uf",
         "body": [
             "struct UnionFind {",
             "    vector<int> p;  // 根なら -(サイズ)、それ以外は親",
@@ -179,14 +267,20 @@
             "        p[y] = x;",
             "        return true;",
             "    }",
+            "    vector<vector<int>> groups() {  // 連結成分ごとの頂点リスト (根の番号順)",
+            "        vector<vector<int>> g(p.size());",
+            "        rep(i, p.size()) g[find(i)].push_back(i);",
+            "        erase_if(g, [](auto& v) { return v.empty(); });",
+            "        return g;",
+            "    }",
             "};"
         ],
-        "description": "Union-Find (経路圧縮 + サイズ併合)。UnionFind uf(n); uf.unite(a, b); uf.same(a, b); uf.size(a)"
+        "description": "Union-Find (経路圧縮 + サイズ併合)。UnionFind uf(n); uf.unite(a, b); uf.same(a, b); uf.size(a); uf.groups() で連結成分の一覧"
     },
     // ---- 数論 ----
     "modpow": {
         "scope": "cpp",
-        "prefix": "modpow",
+        "prefix": "_modpow",
         "body": [
             "ll modpow(ll a, ll e, ll m = ${1:MOD}) {",
             "    ll r = 1;",
@@ -200,7 +294,7 @@
     },
     "combination mod": {
         "scope": "cpp",
-        "prefix": "comb",
+        "prefix": "_comb",
         "body": [
             "const ll MOD = ${1|998244353,1000000007|};",
             "struct Comb {",
@@ -225,7 +319,7 @@
     // ---- DP ----
     "memo recursion 1": {
         "scope": "cpp",
-        "prefix": "memo1",
+        "prefix": "_memo1",
         "body": [
             "vector<optional<${1:ll}>> memo(${2:n} + 1);",
             "auto f = [&](this auto&& f, int ${3:i}) -> ${1:ll} {",
@@ -240,7 +334,7 @@
     },
     "memo recursion 2": {
         "scope": "cpp",
-        "prefix": "memo2",
+        "prefix": "_memo2",
         "body": [
             "vector memo(${1:n} + 1, vector<optional<${2:ll}>>(${3:m} + 1));",
             "auto f = [&](this auto&& f, int ${4:i}, int ${5:j}) -> ${2:ll} {",
@@ -255,7 +349,7 @@
     },
     "memo recursion 3": {
         "scope": "cpp",
-        "prefix": "memo3",
+        "prefix": "_memo3",
         "body": [
             "vector memo(${1:n} + 1, vector(${2:m} + 1, vector<optional<${3:ll}>>(${4:k} + 1)));",
             "auto f = [&](this auto&& f, int ${5:i}, int ${6:j}, int ${7:l}) -> ${3:ll} {",
@@ -270,7 +364,7 @@
     },
     "memo recursion map": {
         "scope": "cpp",
-        "prefix": "memomap",
+        "prefix": "_memomap",
         "body": [
             "map<tuple<${1:int, int}>, ${2:ll}> memo;",
             "auto f = [&](this auto&& f, ${3:int i, int j}) -> ${2:ll} {",

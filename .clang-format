@@ -1,0 +1,13 @@
+# VSCodeVim の = / Shift+Alt+F の整形 (clangd → clang-format) の設定。
+# エディタの自動インデント (.vscode/settings.json の tabSize 4) と合わせる。
+BasedOnStyle: Google
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+AccessModifierOffset: -4
+ColumnLimit: 120
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+# #include の並び替えをしない (bits/stdc++.h の前後を動かされると困る)
+SortIncludes: Never

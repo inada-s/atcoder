@@ -17,7 +17,9 @@
     },
     "[cpp]": {
         "editor.tabSize": 4,
-        "editor.insertSpaces": true
+        "editor.insertSpaces": true,
+        // 整形 (Vim の = や Shift+Alt+F) は clangd に任せる。スタイルはリポジトリ直下の .clang-format
+        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
     },
 
     // ---- デバッグ ----

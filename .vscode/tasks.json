@@ -5,7 +5,7 @@
             // デバッグ用ビルド。最適化なし + デバッグ情報 + STL の範囲チェック (_GLIBCXX_DEBUG)
             "label": "build debug",
             "type": "shell",
-            "command": "g++-15",
+            "command": "${config:cph.language.cpp.Command}",  // tools/setup.sh が書く g++-NN のフルパス
             "args": [
                 "-std=gnu++23", "-g", "-O0", "-DLOCAL", "-D_GLIBCXX_DEBUG",
                 "-I${workspaceFolder}/lib/ac-library", "-I${workspaceFolder}/lib",

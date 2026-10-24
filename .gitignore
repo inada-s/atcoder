@@ -10,3 +10,6 @@ a.out
 
 # デバッグ実行の入力 (launch.json が stdin に流す)
 /in.txt
+
+# tools/setup.sh が書く clangd の設定 (g++ のパスがマシンごとに違う)
+/.clangd

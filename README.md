@@ -14,9 +14,10 @@ atcoder/
 │   ├── cp.code-snippets      # C++ スニペット。全部 _ 始まり (_bfs, _dijkstra, _uf, _memo1 など)。_ を打つと一覧が出る
 │   └── extensions.json       # 推奨拡張 (CPH, Vim, clangd)
 ├── tools/
-│   ├── setup.sh              # パスに依存する CPH の設定をマシン設定に書く (clone 後に 1 回)
+│   ├── setup.sh              # マシンに依存する設定 (CPH のパス、g++、.clangd) を書く (clone 後に 1 回)
 │   └── cph_input.py          # デバッグ用に CPH のテストケースを in.txt に書き出す
-├── compile_flags.txt         # clangd 用 (補完・診断)。clangd 本体は ~/.local/opt/clangd_* (公式バイナリ、sudo 不要)
+├── compile_flags.txt         # clangd 用 (補完・診断)。clangd 本体は WSL は ~/.local/opt/clangd_* (公式バイナリ、sudo 不要)、Mac は Xcode のもの
+├── .clangd                   # clangd に g++ のヘッダを使わせる。setup.sh が書く (gitignore)
 ├── abc326a.cpp ...           # 解答。CPH がルートに作る (gitignore)
 └── .cph/                     # サンプルとバイナリ (gitignore)
 ```
@@ -30,9 +31,20 @@ code ~/atcoder                      # WSL 拡張で開く。推奨拡張を入�
 ./tools/setup.sh                    # リポジトリの場所に依存する CPH の設定をマシン設定に書く
 ```
 
+## セットアップ (Mac)
+
+```sh
+git clone --recursive <this repo> ~/atcoder
+brew install gcc                    # g++-16 など。bits/stdc++.h があるのは GCC だけ (Apple の clang には無い)
+code ~/atcoder                      # 推奨拡張を入れる
+./tools/setup.sh                    # ~/Library/Application Support/Code/User/settings.json に書く
+```
+
+## 共通
+
 Chrome に [Competitive Companion](https://github.com/jmerle/competitive-companion) を入れる。ポートは既定のまま (CPH の 27121 が含まれている)。
 
-CPH はテンプレートの場所や `-I` を絶対パスでしか受け付けない (変数展開なし、相対パスの基準も拡張ホストの作業ディレクトリ) ので、その 3 つだけ `tools/setup.sh` が clone 先を埋めて `~/.vscode-server/data/Machine/settings.json` に書く。リポジトリを動かしたら実行し直す。
+CPH はテンプレートの場所や `-I` を絶対パスでしか受け付けない (変数展開なし、相対パスの基準も拡張ホストの作業ディレクトリ) ので、その 3 つと g++ のパス (PATH 上で一番新しい `g++-NN`。`GXX=g++-15 ./tools/setup.sh` で指定もできる) だけ `tools/setup.sh` が埋めて書く。書き先は WSL ではマシン設定 (`~/.vscode-server/data/Machine/settings.json`)、Mac ではユーザー設定。デバッグ用ビルド (`tasks.json`) も同じ g++ を使う。リポジトリを動かしたり g++ を上げたりしたら実行し直す。
 
 ## 使い方
 

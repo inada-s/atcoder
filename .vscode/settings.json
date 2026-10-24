@@ -7,7 +7,7 @@
     "cph.general.useShortAtCoderName": true,
     "cph.general.timeOut": 4000,
     "cph.general.menuChoices": "cpp python",
-    "cph.language.cpp.Command": "g++-15",
+    // cph.language.cpp.Command (g++-15 や g++-16) もマシンごとに違うので tools/setup.sh が書く
     "cph.language.python.Command": "python3",
 
     // ---- エディタ ----
@@ -30,6 +30,7 @@
     // ---- 補完 (clangd) ----
     // Microsoft C/C++ 拡張の IntelliSense は止めて clangd に任せる (両方動くと二重に出る)
     "C_Cpp.intelliSenseEngine": "disabled",
-    // clangd 本体は PATH 上のもの (~/.local/bin/clangd、公式バイナリ)。フラグは compile_flags.txt
-    "clangd.arguments": ["--header-insertion=never", "--background-index"]
+    // clangd 本体は PATH 上のもの (WSL は ~/.local/bin/clangd、Mac は Xcode の /usr/bin/clangd)。フラグは compile_flags.txt
+    // bits/stdc++.h などのシステムヘッダは g++ から取る (.clangd の Compiler を tools/setup.sh が書く。--query-driver はそれを許可する)
+    "clangd.arguments": ["--header-insertion=never", "--background-index", "--query-driver=/usr/bin/g++-*,/opt/homebrew/bin/g++-*"]
 }

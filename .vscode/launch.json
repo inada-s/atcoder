@@ -1,49 +1,36 @@
 {
+    // デバッガは CodeLLDB (vadimcn.vscode-lldb)。lldb が同梱されているので gdb は不要で、WSL でも Mac でも同じ構成で動く
     "version": "0.2.0",
     "configurations": [
         {
             // CPH のテストケースを選んでデバッグ実行。F5 でケース番号を聞かれる
             "name": "Debug (CPH testcase)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
-            "args": ["<", "${workspaceFolder}/in.txt"],
+            "stdio": ["${workspaceFolder}/in.txt"],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "debug: cph testcase",
-            "MIMode": "gdb",
-            "externalConsole": false,
-            "setupCommands": [
-                { "text": "-enable-pretty-printing", "ignoreFailures": true }
-            ]
+            "preLaunchTask": "debug: cph testcase"
         },
         {
             // in.txt に手で書いた入力でデバッグ実行
             "name": "Debug (stdin = in.txt)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
-            "args": ["<", "${workspaceFolder}/in.txt"],
+            "stdio": ["${workspaceFolder}/in.txt"],
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build debug",
-            "MIMode": "gdb",
-            "externalConsole": false,
-            "setupCommands": [
-                { "text": "-enable-pretty-printing", "ignoreFailures": true }
-            ]
+            "preLaunchTask": "build debug"
         },
         {
             // 入力をターミナルから手で打つ版
             "name": "Debug (stdin = terminal)",
-            "type": "cppdbg",
+            "type": "lldb",
             "request": "launch",
             "program": "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug",
+            "terminal": "integrated",
             "cwd": "${workspaceFolder}",
-            "preLaunchTask": "build debug",
-            "MIMode": "gdb",
-            "externalConsole": false,
-            "setupCommands": [
-                { "text": "-enable-pretty-printing", "ignoreFailures": true }
-            ]
+            "preLaunchTask": "build debug"
         }
     ]
 }

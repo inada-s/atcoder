@@ -12,7 +12,7 @@ atcoder/
 ├── .vscode/
 │   ├── settings.json         # CPH / clangd / デバッグの設定 (パスに依存しないもの)
 │   ├── cp.code-snippets      # C++ スニペット。全部 _ 始まり (_bfs, _dijkstra, _uf, _memo1 など)。_ を打つと一覧が出る
-│   └── extensions.json       # 推奨拡張 (CPH, Vim, clangd)
+│   └── extensions.json       # 推奨拡張 (CPH, Vim, clangd, CodeLLDB)
 ├── tools/
 │   ├── setup.sh              # マシンに依存する設定 (CPH のパス、g++、.clangd) を書く (clone 後に 1 回)
 │   └── cph_input.py          # デバッグ用に CPH のテストケースを in.txt に書き出す
@@ -26,7 +26,7 @@ atcoder/
 
 ```sh
 git clone --recursive <this repo> ~/atcoder
-sudo apt install g++-15 gdb         # g++-15 は ubuntu-toolchain-r/test PPA
+sudo apt install g++-15             # g++-15 は ubuntu-toolchain-r/test PPA
 code ~/atcoder                      # WSL 拡張で開く。推奨拡張を入れる
 ./tools/setup.sh                    # リポジトリの場所に依存する CPH の設定をマシン設定に書く
 ```
@@ -58,7 +58,7 @@ CPH はテンプレートの場所や `-I` を絶対パスでしか受け付け�
 
 ## デバッグ
 
-gdb が必要: `sudo apt install gdb`
+デバッガは CodeLLDB 拡張 (lldb 同梱。gdb は不要)
 
 1. 解答の `.cpp` を開いてブレークポイントを置き、`F5` (「Debug (CPH testcase)」)
 2. ケース番号を聞かれるので答える (1 始まり)。`tools/cph_input.py` が CPH の保存データからその入力を `in.txt` に書き出し、期待する出力をターミナルに表示する

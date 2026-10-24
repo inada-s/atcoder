@@ -11,7 +11,15 @@
                 "-I${workspaceFolder}/lib/ac-library", "-I${workspaceFolder}/lib",
                 "${file}", "-o", "${workspaceFolder}/.cph/${fileBasenameNoExtension}.debug"
             ],
-            "problemMatcher": ["$gcc"],
+            // $gcc は Microsoft C/C++ 拡張が提供するもので、入っていないと使えないので同じものを書いておく
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["autoDetect", "${workspaceFolder}"],
+                "pattern": {
+                    "regexp": "^(.*?):(\\d+):(\\d*):?\\s+(?:fatal\\s+)?(warning|error):\\s+(.*)$",
+                    "file": 1, "line": 2, "column": 3, "severity": 4, "message": 5
+                }
+            },
             "presentation": { "reveal": "silent", "clear": true }
         },
         {

@@ -672,5 +672,23 @@
             "};"
         ],
         "description": "BIT (Fenwick 木、0-indexed、main の外に置く)。bit.add(i, v) で a[i] += v、bit.sum(i) で [0, i) の和、bit.sum(l, r) で [l, r) の和。転倒数や「i 番目に小さい値」にも"
+    },
+    // ---- 幾何 ----
+    "argument sort": {
+        "scope": "cpp",
+        "prefix": "_argsort",
+        "body": [
+            "// 偏角ソート (整数演算のみ)。x 軸の正の向きから反時計回りに [0, 2π) の順。原点 (0, 0) は入れないこと",
+            "// 同じ向きの点どうしは等しい扱い (順番は不定、必要なら stable_sort)。座標の絶対値 <= 1e9 まで (外積が ll に収まる)",
+            "auto half = [](ll x, ll y) { return y < 0 || (y == 0 && x < 0); };  // 角度が [π, 2π) なら true",
+            "auto cross = [](ll ax, ll ay, ll bx, ll by) { return ax * by - ay * bx; };  // > 0 なら b は a から反時計回り側",
+            "sort(${1:ps}.begin(), ${1:ps}.end(), [&](const pair<ll, ll>& a, const pair<ll, ll>& b) {",
+            "    auto [ax, ay] = a;",
+            "    auto [bx, by] = b;",
+            "    if (half(ax, ay) != half(bx, by)) return half(ax, ay) < half(bx, by);",
+            "    return cross(ax, ay, bx, by) > 0;  // 同じ半分の中では外積 > 0 なら a の方が角度が小さい",
+            "});"
+        ],
+        "description": "偏角ソート (整数のみ、atan2 を使わない)。vector<pair<ll, ll>> を x 軸正の向きから反時計回りに並べる。原点は不可、|座標| <= 1e9"
     }
 }

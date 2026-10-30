@@ -13,3 +13,6 @@ a.out
 
 # tools/setup.sh が書く clangd の設定 (g++ のパスがマシンごとに違う)
 /.clangd
+
+# tools/setup.sh が張る Boost へのリンク (実体は ~/.local/opt/boost_*。-isystem で読む)
+/lib/boost

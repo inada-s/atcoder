@@ -2,6 +2,8 @@
 -DLOCAL
 -Ilib/ac-library
 -Ilib
+-isystem
+lib/boost
 -Wall
 -Wextra
 -Wno-unused-parameter
